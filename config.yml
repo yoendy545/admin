@@ -1,0 +1,30 @@
+backend:
+  name: git-gateway # Usa Git Gateway para autenticación con Netlify Identity
+  branch: main # La rama de tu repositorio donde se guardarán los cambios
+
+media_folder: "public/uploads" # Carpeta donde se subirán las imágenes
+public_folder: "/uploads" # Ruta pública para acceder a las imágenes
+
+collections:
+  - name: "vehicles_data" # Un nombre para la colección de datos
+    label: "Gestión de Vehículos" # Etiqueta en el panel
+    format: "json" # Guardar como JSON
+    file: "data/vehicles.json" # Guardar en este archivo
+    editor:
+      preview: false # No necesitamos una vista previa compleja para un archivo JSON
+    fields:
+      - label: "Lista de Vehículos"
+        name: "vehicles"
+        widget: "list"
+        allow_add: true
+        summary: "{{fields.title}}"
+        fields:
+          - {label: "Título", name: "title", widget: "string", required: true}
+          - {label: "Descripción", name: "description", widget: "text", required: true}
+          - {label: "Precio", name: "price", widget: "string", required: true, pattern: "^\\$[0-9,.]+$", pattern_error: "Formato de precio inválido. Ej: $123,456.78"}
+          - {label: "Imagen Principal", name: "mainImage", widget: "image", required: true}
+          - {label: "Galería de Imágenes (Opcional)", name: "gallery", widget: "list", field: {label: "Imagen", name: "image", widget: "image"}, required: false, allow_add: true}
+          - {label: "Especificaciones", name: "specs", widget: "list", field: {label: "Especificación", name: "spec", widget: "string"}, required: false, allow_add: true}
+          - {label: "Tipo de Vehículo", name: "type", widget: "select", options: ["deportivo", "suv", "sedan", "electrico", "otro"], default: "otro", required: true}
+
+
